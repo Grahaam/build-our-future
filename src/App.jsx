@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FragmentDisplay from "./components/FragmentDisplay";
 import FoyerPuzzle from "./components/puzzles/FoyerPuzzle";
+import FinalReveal from "./components/puzzles/FinalReveal";
 
 const App = () => {
 	const [currentLevel, setCurrentLevel] = useState(1);
 	const [unlockedCount, setUnlockedCount] = useState(0);
+	const masterImg = "/src/assets/images/master-plan.png";
 
 	const handleLevelComplete = () => {
 		setUnlockedCount((prev) => prev + 1);
@@ -15,20 +17,18 @@ const App = () => {
 	return (
 		<div className="game-container">
 			<div className="inventory-panel">
-				<h4 className="text-center font-serif mb-2 text-sm text-gray-500">
-					Progress
+				<h4 className="text-center text-xs uppercase tracking-widest mb-4">
+					Master Plan
 				</h4>
 				<FragmentDisplay
 					unlockedCount={unlockedCount}
-					masterPlanImg="/assets/master-plan.png"
+					masterPlanImg={masterImg}
 				/>
 			</div>
 
-			<header className="mb-10 text-center">
-				<h1 className="text-4xl font-serif text-[#5D4037] mb-2 italic">
-					Building Our Future
-				</h1>
-				<p className="text-gray-400">Level {currentLevel}: The Foyer</p>
+			<header className="text-center mb-12">
+				<h1 className="text-5xl font-serif italic mb-2">Building Our Future</h1>
+				<p className="text-stone-400">Level {currentLevel}: The Foyer</p>
 			</header>
 
 			<main className="w-full flex justify-center">
@@ -36,18 +36,21 @@ const App = () => {
 					{currentLevel === 1 && (
 						<motion.div
 							key="l1"
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -20 }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
 						>
 							<FoyerPuzzle onComplete={handleLevelComplete} />
 						</motion.div>
 					)}
 
 					{currentLevel > 1 && (
-						<motion.div className="text-center">
-							<h2 className="text-2xl italic">To be continued...</h2>
-							<p>Room 2: The Kitchen is under construction!</p>
+						<motion.div
+							key="final"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+						>
+							<FinalReveal masterPlanImg={masterImg} />
 						</motion.div>
 					)}
 				</AnimatePresence>
